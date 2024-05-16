@@ -42,23 +42,20 @@ public class TestBuggyAList {
                 L.addLast(randVal);
                 B_L.addLast(randVal);
                 assertEquals(L.getLast(), B_L.getLast());
-                System.out.println("addLast(" + randVal + ")");
             } else if (operationNumber == 1) {
                 // size
                 int size = L.size();
                 int B_size = B_L.size();
                 assertEquals(size, B_size);
-                System.out.println("L size: " + size + " B_L size: " + B_size);
             }else if (operationNumber == 2 && L.size() > 0) {
                 int Last_v = L.getLast();
                 int Last_bv = B_L.getLast();
                 assertEquals(Last_v, Last_bv);
-                System.out.println("L last:" + Last_v + " B_L last: " + Last_bv);
             }else if (operationNumber == 3 && L.size() > 0) {
                 int Last_v2 = L.removeLast();
                 int Last_bv2 = B_L.removeLast();
                 assertEquals(Last_v2, Last_bv2);
-                System.out.println("L remove the last:" + Last_v2 + " B_L remove the last: " + Last_bv2);
+                
 
             }
         }
