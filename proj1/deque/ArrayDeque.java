@@ -24,7 +24,7 @@ public class ArrayDeque<T> implements Deque<T>{
             items = resize(items);
         }
         size++;
-        if (fornt == - 1) {
+        if (front == - 1) {
             front = 0;
             rear = 0;
             items[front] = item;
@@ -97,7 +97,7 @@ public class ArrayDeque<T> implements Deque<T>{
     }
 
     public T[] resize(T[] items) {
-        T[] items2 = new Objects[items.length * 2]
+        T[] items2 = (T[]) new Objects[items.length * 2];
         for (int i = 0; i < items.length; i++) {
             items2[i] = items[i];
         }
