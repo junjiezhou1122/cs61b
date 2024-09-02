@@ -1,137 +1,139 @@
 package deque;
 
 public class LinkedListDeque<T> {
-    public class TNode {
-        public T item;
-        public TNode next;
-        public TNode prev;
+    private static class Node<T> {
+        //declare the main variable for Double list
+        T item;
+        Node<T> previous;
+        Node<T> next;
 
-        public TNode(T i, TNode n, TNode pn) {
-            item = i;
-            next = n;
-            prev = pn;
+        //declare a constructor for circular
+        public Node(T item, Node<T> previous, Node<T> next){
+            this.item = item;
+            this.previous = previous;
+            this.next = next;
+        }
+
+        public T getRecursive(int index) {
+
+            if (index == 0) {
+                return this.item;
+            } else if (this.next != null){
+                return this.next.getRecursive(index - 1);
+            }
+            return null;
         }
     }
-    private TNode sentinel;
-    private int size = 0;
 
+
+
+    //create a sentinel
+    Node<T> sentinel;
+
+    //constructor
     public LinkedListDeque() {
-            sentinel = new TNode(null, null, null);
-            sentinel.prev = sentinel;
-        }
-
-
-        public void addFirst(T item) {
-            TNode p = new TNode(item, null, null);
-
-            if (sentinel.next == null) {
-                sentinel.next = p;
-                p.prev = sentinel;
-                sentinel.prev = p;
-            }
-            else {
-                p.next = sentinel.next;
-                sentinel.next.prev = p;
-                p.prev = sentinel;
-                sentinel.next = p;
-            }
-            size++;
-
-        }
-
-        public void addLast(T item) {
-            TNode p = sentinel.prev;
-            p.next = new TNode (item, null, null);
-            p.next.prev = p;
-            sentinel.prev = p.next;
-            p.next.next = sentinel;
-            size++;
-        }
-
-        public boolean isEmpty() {
-            if (sentinel.next == null) {
-                return true;
-            }
-            return false;
-        }
-
-        public int size(){
-            return size;
-        }
-
-        public void printDeque() {
-            TNode p = sentinel.next;
-            for (int i = 0; i < size; i++){
-                System.out.print(p.item + " ");
-                p = p.next;
-            }
-            System.out.println();
-        }
-
-        public T removeFirst() {
-            if (size == 0){
-                return null;
-            }
-            TNode p = sentinel.next;
-            sentinel.next = p.next;
-            p.next.prev = sentinel;
-            p.next = null;
-            p.prev = null;
-            size--;
-
-            return p.item;
-        }
-
-        public T removeLast() {
-
-            if (size == 0) {
-                return null;
-            }
-
-            TNode p = sentinel.prev;
-            sentinel.prev = p.prev;
-            p.prev.next = sentinel;
-            p.prev = null;
-            p.next = null;
-            size--;
-
-            return p.item;
-        }
-
-        public T get(int index){
-            if (sentinel.next == null){
-                return null;
-            }
-            TNode p = sentinel.next;
-            while(index != 0){
-                p = p.next;
-                index--;
-            }
-            return p.item;
-        }
-
-        public T getFirst() {
-            return sentinel.next.item;
-        }
-
-        public T getLast() {
-            return sentinel.prev.item;
-        }
-
-        public static void main (String[] args) {
-            LinkedListDeque<Integer> li = new LinkedListDeque<Integer>();
-            li.addFirst(1);
-            li.addFirst(2);
-            li.addLast(3);
-            System.out.println(li.get(0));
-            System.out.println(li.get(1));
-            System.out.println(li.get(2));
-            li.printDeque();
-            System.out.println(li.getFirst());
-            System.out.println(li.getLast());
-            System.out.println(li.size());
-        }
-
-
+        sentinel = new Node<T>(null, null, null);
     }
 
+    // create a size variable
+    int size = 0;
+
+    //create a constructor
+    public LinkedListDeque(T item, Node<T> previous, Node<T> next){
+        sentinel = new Node<T>(null, null, null);
+        sentinel = new Node<T>(item, sentinel,sentinel);
+    }
+
+    // insert the item at first
+    public void addFirst(T item) {
+        Node<T> p = new Node<>(item, null, null);
+        sentinel.next.next = p.next;
+        sentinel.next.next.previous = p;
+        sentinel.next = p;
+        p.previous = sentinel;
+        size += 1;
+    }
+
+    // insert the item at last
+    public void addLast(T item) {
+        Node<T> p = new Node<>(item, null, null);
+        sentinel.previous.next = p;
+        p.previous = sentinel.previous;
+        p.next = sentinel;
+        sentinel.previous = p;
+        size += 1;
+    }
+
+    // whether the list is empty or not
+    public boolean isEmpty() {
+        if (sentinel.next == null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // return the size of list
+    public int size() {
+        return size;
+    }
+
+    // Prints the items in the deque from first to last, separated by a space.
+    // Once all the items have been printed, print out a new line.
+    public void printDeque() {
+        for (int i = 0; i < size; i++) {
+            System.out.print(sentinel.next.item + " ");
+            sentinel.next = sentinel;
+        }
+        System.out.println();
+    }
+
+    //Removes and returns the item at the front of the deque. If no such item exists, returns null.
+    public T removeFirst() {
+        if (sentinel.next == null) {
+            return null;
+        }
+
+        Node<T> first = sentinel.next;
+        sentinel.next = sentinel.next.next;
+        sentinel.next.next.previous = sentinel;
+        return first.item;
+    }
+
+     //Removes and returns the item at the back of the deque. If no such item exists, returns null.
+     public T removeLast() {
+        if (sentinel.previous == null) {
+            return null;
+        }
+
+        Node<T> last = sentinel.previous;
+        sentinel.previous = sentinel.previous.previous;
+        sentinel.previous.previous.next = sentinel;
+        return last.item;
+     }
+
+     //Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+     // If no such item exists, returns null
+    public T get(int index) {
+        Node<T> p = sentinel;
+        if (index <= 0 || index >= size) {
+            return null;
+        }
+
+        for (int i = 0; i <= index; i++) {
+            p = p.next;
+        }
+
+        return p.item;
+    }
+
+    //recursion version of get function
+    public T getRecursive(int index) {
+        //using helper function
+        if (index < 0 || index >= size) {
+            return null;
+        }
+
+        return sentinel.next.getRecursive(index);
+    }
+}
