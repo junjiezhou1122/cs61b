@@ -1,6 +1,6 @@
 package deque;
 
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
     private static class Node<T> {
         //declare the main variable for Double list
         T item;
@@ -45,6 +45,7 @@ public class LinkedListDeque<T> {
     }
 
     // insert the item at first
+    @Override
     public void addFirst(T item) {
         Node<T> p = new Node<>(item, null, null);
         sentinel.next.next = p.next;
@@ -55,6 +56,7 @@ public class LinkedListDeque<T> {
     }
 
     // insert the item at last
+    @Override
     public void addLast(T item) {
         Node<T> p = new Node<>(item, null, null);
         sentinel.previous.next = p;
@@ -65,6 +67,7 @@ public class LinkedListDeque<T> {
     }
 
     // whether the list is empty or not
+    @Override
     public boolean isEmpty() {
         if (sentinel.next == null) {
             return true;
@@ -74,12 +77,14 @@ public class LinkedListDeque<T> {
     }
 
     // return the size of list
+    @Override
     public int size() {
         return size;
     }
 
     // Prints the items in the deque from first to last, separated by a space.
     // Once all the items have been printed, print out a new line.
+    @Override
     public void printDeque() {
         for (int i = 0; i < size; i++) {
             System.out.print(sentinel.next.item + " ");
@@ -89,6 +94,7 @@ public class LinkedListDeque<T> {
     }
 
     //Removes and returns the item at the front of the deque. If no such item exists, returns null.
+    @Override
     public T removeFirst() {
         if (sentinel.next == null) {
             return null;
@@ -101,6 +107,7 @@ public class LinkedListDeque<T> {
     }
 
      //Removes and returns the item at the back of the deque. If no such item exists, returns null.
+    @Override
      public T removeLast() {
         if (sentinel.previous == null) {
             return null;
@@ -114,6 +121,7 @@ public class LinkedListDeque<T> {
 
      //Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      // If no such item exists, returns null
+    @Override
     public T get(int index) {
         Node<T> p = sentinel;
         if (index <= 0 || index >= size) {
