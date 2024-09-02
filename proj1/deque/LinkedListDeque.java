@@ -47,22 +47,28 @@ public class LinkedListDeque<T> implements Deque<T> {
     // insert the item at first
     @Override
     public void addFirst(T item) {
-        Node<T> p = new Node<>(item, null, null);
-        sentinel.next.next = p.next;
-        sentinel.next.next.previous = p;
-        sentinel.next = p;
-        p.previous = sentinel;
+        Node<T> newNode = new Node<>(item, sentinel, sentinel.next);
+        if (sentinel.next != null) {
+            sentinel.next.previous = newNode;
+        }
+        sentinel.next = newNode;
+        if (size == 0) {
+            sentinel.previous = newNode;
+        }
         size += 1;
     }
 
     // insert the item at last
     @Override
     public void addLast(T item) {
-        Node<T> p = new Node<>(item, null, null);
-        sentinel.previous.next = p;
-        p.previous = sentinel.previous;
-        p.next = sentinel;
-        sentinel.previous = p;
+        Node<T> newNode = new Node<>(item, sentinel.previous, sentinel);
+        if (sentinel.next != null) {
+            sentinel.previous.next = newNode;
+        }
+        sentinel.previous = newNode;
+        if (size == 0) {
+            sentinel.next = newNode;
+        }
         size += 1;
     }
 
