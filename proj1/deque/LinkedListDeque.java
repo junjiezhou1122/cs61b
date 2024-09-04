@@ -77,7 +77,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
 
     @Override
     public T removeFirst() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
 
@@ -85,13 +85,16 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
         size -= 1;
+
         return removeItem;
+
+       
 
     }
 
     @Override
     public T removeLast() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
 
@@ -116,7 +119,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
     }
 
     public T getRecursive(int index) {
-        if (index < 0 || index >-= size) {
+        if (index < 0 || index >= size) {
             return null;
         }
 

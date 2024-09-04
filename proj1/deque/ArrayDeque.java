@@ -124,4 +124,18 @@ public class ArrayDeque<T> implements Deque<T>, Iterable{
 
 
     }
+
+    private void resize() {
+        T[] newItems = (T[]) new Object[items.length * 2];
+        for (int i = 0; i < size; i++) {
+            newItems[i] = get(i);
+        }
+        items = newItems;
+        front = 0;
+        rear = size - 1;
+    }
+
+    private boolean isFull() {
+        return size == items.length;
+    }
 }
