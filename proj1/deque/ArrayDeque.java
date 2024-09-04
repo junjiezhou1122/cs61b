@@ -1,60 +1,52 @@
 package deque;
 
-import org.junit.Test;
+import java.util.Iterator;
 
-import java.util.Objects;
-
-
-public class ArrayDeque<T> implements Deque<T>{
+public class ArrayDeque<T> implements Deque<T>, Iterable{
     private T[] items;
+    private int size;
     private int front;
     private int rear;
-    private int size;
 
     public ArrayDeque() {
-        items = (T[]) new Objects[8];
+        T[] items = (T[]) new Object[8];
+        size = 0;
         front = -1;
         rear = -1;
-        size = 0;
     }
 
     @Override
     public void addFirst(T item) {
         if (isFull()) {
-            items = resize(items);
+            resize();
         }
-        size++;
-        if (front == - 1) {
+        if (size == 0) {
+            items[0] = item;
             front = 0;
             rear = 0;
-            items[front] = item;
-        } else if (front == 0) {
-            front = items.length - 1;
-            items[front] = item;
         } else {
-            front -= 1;
+            front = (front - 1) % items.length;
             items[front] = item;
         }
+        size++;
+
     }
 
     @Override
     public void addLast(T item) {
         if (isFull()) {
-            items = resize(items);
+            resize();
         }
 
-        size++;
-        if (front == -1) {
+        if (size == 0) {
+            items[0] = item;
             front = 0;
             rear = 0;
-            items[rear] = item;
-        } else if (rear == items.length - 1) {
-            rear = 0;
-            items[rear] = item;
         } else {
-            rear += 1;
+            rear = (rear + 1) % items.length;
             items[rear] = item;
         }
+        size++;
     }
 
     @Override
@@ -64,52 +56,86 @@ public class ArrayDeque<T> implements Deque<T>{
 
     @Override
     public void printDeque() {
-        for (T item: items) {
-            System.out.print(item + " ");
+        for (int i = front; i < size; i = (i + 1) % items.length) {
+            System.out.print(items[i]);
         }
-
         System.out.println();
     }
 
     @Override
     public T removeFirst() {
-        if (front == - 1) {
+        if (isEmpty()) {
             return null;
         }
         T removeItem = items[front];
-        front = (front + 1) % items.length;
+        if (size == 1) {
+            front = - 1;
+            rear = -1;
+        } else {
+            front = (front + 1) % items.length;
+        }
+        size--;
         return removeItem;
     }
 
     @Override
     public T removeLast() {
-        if (rear == -1) {
+        if (isEmpty()) {
             return null;
         }
-        T removeItem = items[front];
-        rear = (rear - 1) % items.length;
+        T removeItem = items[rear];
+        if (size == 1) {
+            front = -1;
+            rear = -1;
+        } else {
+            rear = (rear - 1) % items.length;
+        }
+        size--;
         return removeItem;
+
     }
 
     @Override
     public T get(int index) {
-        return items[index];
+        return items[(front + index) % items.length];
     }
 
-    public T[] resize(T[] items) {
-        T[] items2 = (T[]) new Objects[items.length * 2];
-        for (int i = 0; i < items.length; i++) {
-            items2[i] = items[i];
-        }
-        return items2;
+    @Override
+    public Iterator iterator() {
+        return new ArrayDequeIterator();
     }
 
-    public boolean isFull() {
-        if (size == items.length) {
-            return true;
+    private class ArrayDequeIterator implements Iterator<T>{
+        private int x;
+
+        public ArrayDequeIterator() {
+            x = 0;
         }
-        return false;
+
+        @Override
+        public boolean hasNext() {
+           return x < size;
+        }
+
+        @Override
+        public T next() {
+            return items[(front + x) % items.length];
+        }
+
+
+    }
+
+    private void resize() {
+        T[] newItems = (T[]) new Object[items.length * 2];
+        for (int i = 0; i < size; i++) {
+            newItems[i] = get(i);
+        }
+        items = newItems;
+        front = 0;
+        rear = size - 1;
+    }
+
+    private boolean isFull() {
+        return size == items.length;
     }
 }
-
-    
