@@ -34,60 +34,24 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
 
     @Override
     public void addFirst(T item) {
-<<<<<<< HEAD
-        Node<T> newNode = new Node<>(item, sentinel, sentinel.next);
-        if (sentinel.next != null) {
-            sentinel.next.previous = newNode;
-        }
-        sentinel.next = newNode;
-        if (size == 0) {
-            sentinel.previous = newNode;
-        }
-        size += 1;
-=======
         size++;
-        if (sentinel.next == sentinel) {
-            sentinel.next = new Node<T>(item, sentinel, sentinel);
-            sentinel.prev = sentinel.next;
-        } else {
-            Node<T> p = new Node<T>(item, sentinel, sentinel.next);
-            sentinel.next.prev = p;
-            sentinel.next = p;
-        }
->>>>>>> HEAD@{1}
+        Node<T> newNode = new Node<>(item, sentinel, sentinel.next);
+        sentinel.next.prev = newNode;
+        sentinel.next = newNode;
     }
 
     @Override
     public void addLast(T item) {
-<<<<<<< HEAD
-        Node<T> newNode = new Node<>(item, sentinel.previous, sentinel);
-        if (sentinel.next != null) {
-            sentinel.previous.next = newNode;
-        }
-        sentinel.previous = newNode;
-        if (size == 0) {
-            sentinel.next = newNode;
-        }
-        size += 1;
+        size++;
+        Node<T> newNode = new Node<>(item, sentinel.prev, sentinel);
+        sentinel.prev.next = newNode;
+        sentinel.prev = newNode;
     }
 
     // whether the list is empty or not
     @Override
     public boolean isEmpty() {
-        if (sentinel.next == null) {
-            return true;
-=======
-        size++;
-        if (sentinel.next == sentinel) {
-            sentinel.next = new Node<T>(item, sentinel, sentinel);
-            sentinel.prev = sentinel.next;
-        } else {
-            Node<T> p = new Node<T>(item, sentinel.prev, sentinel);
-            sentinel.prev.next = p;
-            sentinel.prev = p;
->>>>>>> HEAD@{1}
-        }
-
+        return size == 0;
     }
 
     @Override
@@ -97,11 +61,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
 
     @Override
     public void printDeque() {
-        Node<T> p = sentinel;
+        Node<T> p = sentinel.next;
         for (int i = 0; i < size; i++) {
-            System.out.print(p.next.item);
+            System.out.print(p.item + " ");
             p = p.next;
-
         }
         System.out.println();
     }
@@ -111,16 +74,11 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         if (isEmpty()) {
             return null;
         }
-
+        size--;
         T removeItem = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
-        size -= 1;
-
         return removeItem;
-
-       
-
     }
 
     @Override
@@ -128,11 +86,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
         if (isEmpty()) {
             return null;
         }
-
+        size--;
         T removeItem = sentinel.prev.item;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
-        size -= 1;
         return removeItem;
     }
 
