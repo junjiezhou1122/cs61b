@@ -2,14 +2,14 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Deque<T>, Iterable{
+public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
     private T[] items;
     private int size;
     private int front;
     private int rear;
 
     public ArrayDeque() {
-        T[] items = (T[]) new Object[8];
+        items = (T[]) new Object[8];
         size = 0;
         front = -1;
         rear = -1;
