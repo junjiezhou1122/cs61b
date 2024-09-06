@@ -25,7 +25,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
             front = 0;
             rear = 0;
         } else {
-            front = (front - 1) % items.length;
+            front = (front - 1 + items.length) % items.length;
             items[front] = item;
         }
         size++;
@@ -43,7 +43,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
             front = 0;
             rear = 0;
         } else {
-            rear = (rear + 1) % items.length;
+            rear = (rear + 1 +items.length) % items.length;
             items[rear] = item;
         }
         size++;
@@ -72,7 +72,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
             front = - 1;
             rear = -1;
         } else {
-            front = (front + 1) % items.length;
+            front = (front + 1 + items.length) % items.length;
         }
         size--;
         return removeItem;
@@ -88,7 +88,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
             front = -1;
             rear = -1;
         } else {
-            rear = (rear - 1) % items.length;
+            rear = (rear - 1 + items.length) % items.length;
         }
         size--;
         return removeItem;
