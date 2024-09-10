@@ -55,23 +55,20 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable
 
     @Override
     public V get(K key) {
-        if (!containsKey(key)) {
-            return null;
-        }
         return get(key, root);
-
     }
 
-    public V get(K key, Node r) {
-
-        if (key == r.key) {
-            return r.value;
+    private V get(K key, Node r) {
+        if (r == null) {
+            return null;
         }
         int cmp = key.compareTo(r.key);
-        if (cmp > 0) {
-            return get(key, r.right);
-        } else {
+        if (cmp == 0) {
+            return r.value;
+        } else if (cmp < 0) {
             return get(key, r.left);
+        } else {
+            return get(key, r.right);
         }
     }
 
