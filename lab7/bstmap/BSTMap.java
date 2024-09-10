@@ -127,7 +127,7 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable
 
     @Override
     public V remove(K key) {
-        Node[] result = new Node[1];
+        Node[] result = (Node[]) new Object[1];
         root = remove(key, root, result);
         if (result[0] != null) {
             size--; // Decrement size when removing a node
