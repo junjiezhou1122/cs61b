@@ -8,10 +8,12 @@ import java.util.Set;
 
 public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable<K>{
     private Node root;
+    private int size; // Add this field to track the size
 
     // Add a no-argument constructor
     public BSTMap() {
         root = null;
+        size = 0;
     }
 
     // Keep your existing constructor if needed
@@ -21,17 +23,13 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable
     }
     @Override
     public void clear() {
-        helpclear(root);
+        root = null;
+        size = 0; // Reset size when clearing the tree
         return;
     }
 
-    public void helpclear(Node root) {
-        if (root.left == null && root.right == null) {
-            root = null;
-        }
-        helpclear(root.left);
-        helpclear(root.right);
-    }
+
+  
 
     @Override
     public boolean containsKey(K key) {
@@ -79,7 +77,7 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable
 
     @Override
     public int size() {
-        return size(root);
+        return size; // Return the tracked size
     }
 
     public int size(Node r) {
@@ -96,7 +94,8 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable
 
     public Node put(K key, V value, Node r) {
         if (r == null) {
-            return new Node(key, value, null, null);
+            size++; // Increment size when adding a new node
+            return new Node(key, value);
         }
 
         int cmp = key.compareTo(r.key);
@@ -131,9 +130,13 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable
 
     @Override
     public V remove(K key) {
-        Node[] result = (Node[]) new Object[1];
+        Node[] result = new Node[1];
         root = remove(key, root, result);
-        return result[0] == null ? null : result[0].value;
+        if (result[0] != null) {
+            size--; // Decrement size when removing a node
+            return result[0].value;
+        }
+        return null;
     }
 
     public Node remove(K key, Node r, Node[] removed) {
