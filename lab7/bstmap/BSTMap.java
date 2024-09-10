@@ -72,6 +72,20 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable
         }
     }
 
+    private V get(K key, Node node) {
+        if (node == null) {
+            return null;
+        }
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0) {
+            return get(key, node.left);
+        } else if (cmp > 0) {
+            return get(key, node.right);
+        } else {
+            return node.value;
+        }
+    }
+
     @Override
     public int size() {
         return size; // Return the tracked size
@@ -195,6 +209,19 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V>, Iterable
     @Override
     public Iterator<K> iterator() {
         return keySet().iterator();
+    }
+
+    public void printInOrder() {
+        printInOrder(root);
+    }
+
+    private void printInOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        printInOrder(node.left);
+        System.out.println(node.key.toString() + " -> " + node.value.toString());
+        printInOrder(node.right);
     }
 
 
